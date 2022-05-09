@@ -1,0 +1,50 @@
+You are given a nested list of integers nestedList. Each element is either an integer or a list whose elements may also be integers or other lists. 
+Implement an iterator to flatten it.
+
+Implement the NestedIterator class:
+
+NestedIterator(List<NestedInteger> nestedList) Initializes the iterator with the nested list nestedList.
+int next() Returns the next integer in the nested list.
+boolean hasNext() Returns true if there are still some integers in the nested list and false otherwise.
+
+Input: nestedList = [1,[4,[6]]]
+Output: [1,4,6]
+Explanation: By calling next repeatedly until hasNext returns false, the order of elements returned by next should be: [1,4,6].
+
+
+//solution:
+
+class NestedIterator {
+public:
+    vector<int> v;
+    int c=0;
+    void process(vector<NestedInteger> &nestedList)
+    {
+        for(int i=0;i<nestedList.size();i++)
+        {
+            if(nestedList[i].isInteger())
+            {
+                v.push_back(nestedList[i].getInteger());
+            }
+            else
+            {
+                process(nestedList[i].getList());
+            }
+        }  
+    }
+    NestedIterator(vector<NestedInteger> &nestedList) {
+        process(nestedList);
+    }
+    
+    int next() {
+     int ans=v[c];
+        c++;
+        return ans;
+    }
+    
+    bool hasNext() {
+        if(c<v.size())
+            return true;
+        return false;
+    }
+};

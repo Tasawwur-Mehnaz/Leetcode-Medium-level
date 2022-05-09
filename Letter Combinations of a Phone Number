@@ -1,0 +1,38 @@
+class Solution {
+public:
+    vector<string> ans;
+    unordered_map<char,string> m;
+    void process(string digits,string curstr,int a)
+    {
+        if(a==digits.size())
+        { 
+             ans.push_back(curstr);
+             return;
+        }
+        for(auto i: m[digits[a]])
+        {
+            curstr+=i;
+            process(digits,curstr,a+1);
+            curstr.pop_back();
+        }
+    }
+    vector<string> letterCombinations(string digits) {
+        
+        int n=digits.size();
+        if(n==0)
+          return ans;
+            m['2']="abc";
+            m['3']="def";
+            m['4']="ghi";
+            m['5']="jkl";       
+            m['6']="mno";
+            m['7']="pqrs";
+            m['8']="tuv";
+            m['9']="wxyz";
+    
+    string curstr="";
+    process(digits,curstr,0);  
+    return ans;
+        
+    }
+};

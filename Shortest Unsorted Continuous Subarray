@@ -1,0 +1,67 @@
+Given an integer array nums, you need to find one continuous subarray that if you only sort this subarray in ascending order, then the whole array will be sorted in ascending order.
+Return the shortest such subarray and output its length.
+ 
+
+Example 1:
+
+Input: nums = [2,6,4,8,10,9,15]
+Output: 5
+Explanation: You need to sort [6, 4, 8, 10, 9] in ascending order to make the whole array sorted in ascending order.
+
+
+//SOLUTION:
+
+APPROACH 1: By taking duplicate of nums vector and then compare.
+
+class Solution {
+public:
+    int findUnsortedSubarray(vector<int>& nums) {
+        int s=0,l=nums.size()-1;
+        vector<int> temp;
+        for(auto i:nums)
+        {
+            temp.push_back(i);
+        }
+        sort(temp.begin(),temp.end());
+        while(s<nums.size() && nums[s]==temp[s])
+        {  
+            s++;
+        }
+        while(l>=0 and nums[l]==temp[l])
+        {  
+            l--;
+        }
+        if(l>s)
+            return l-s+1;
+        else
+            return 0;
+    }
+};
+
+
+APPROACH 2: By checking unsorted element from start and end (two loops).
+
+class Solution {
+public:
+    int findUnsortedSubarray(vector<int>& nums) {
+        int s=-1,l=nums.size()-1;
+        int a=nums[0];
+        for(int i=1;i<=l;i++)
+        {
+            if(a>nums[i])
+                s=i;
+            else
+                a=nums[i];
+        }
+        int b=nums[l];
+        int c=0;
+        for(int i=l-1;i>=0;i--)
+        {
+             if(b<nums[i])
+                c=i;
+             else
+                b=nums[i];
+        }
+        return s-c+1;
+    }
+};

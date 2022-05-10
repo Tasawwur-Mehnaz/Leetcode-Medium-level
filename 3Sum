@@ -29,7 +29,7 @@ public:
                     ans.push_back({nums[i],nums[j],nums[k]});
                     int v1=nums[j];
                     int v2=nums[k];
-                    while(j<k and nums[j]==v1)        // for resetting of j and k as we dont want any duplicate tuple
+                    while(j<k and nums[j]==v1)          // for resetting of j and k as we dont want any duplicate tuple
                     j++;
                     while(k>j and nums[k]==v2)
                     k--;

@@ -1,0 +1,103 @@
+Given an integer n, return the number of strings of length n that consist only of vowels (a, e, i, o, u) and are lexicographically sorted.
+A string s is lexicographically sorted if for all valid i, s[i] is the same as or comes before s[i+1] in the alphabet.
+
+Example 1:
+
+Input: n = 1
+Output: 5
+Explanation: The 5 sorted strings that consist of vowels only are ["a","e","i","o","u"].
+
+Example 2:
+
+Input: n = 2
+Output: 15
+Explanation: The 15 sorted strings that consist of vowels only are
+["aa","ae","ai","ao","au","ee","ei","eo","eu","ii","io","iu","oo","ou","uu"].
+Note that "ea" is not a valid string since 'e' comes after 'a' in the alphabet.
+
+SOLUTION:
+
+Approach 1: Prefix sum, by observing pattern
+
+class Solution {
+public:
+    int countVowelStrings(int n) {
+        vector<int> v(5,1);
+        for(int i=2;i<=n;i++)
+        {
+            for(int j=1;j<5;j++)
+            {
+                v[j]+=v[j-1];        //prefix sum
+            }
+        }
+        int ans=accumulate(v.begin(),v.end(),0);
+        return ans;
+    }
+};
+
+Approach 2: simple logic
+
+class Solution {
+public:
+    int countVowelStrings(int n) {
+        int a=1,e=1,i=1,o=1,u=1;
+        while(--n)
+        {
+            o+=u;
+            i+=o;
+            e+=i;
+            a+=e;
+        }
+        return a+e+i+o+u;
+    }
+};
+
+Approach 3: Dynamic programming but similar to prefix sum
+
+class Solution {
+public:
+    int countVowelStrings(int n) {
+       vector<int> dp(5,1);
+        int ans=0;
+        while(--n)
+        {
+            for(int i=3;i>=0;i--)
+            {
+                dp[i]+=dp[i+1];
+            }
+        }
+        for(auto i: dp)
+        {
+            ans+=i;
+        }
+        return ans;
+    }
+};
+
+Approach 4: Backtracking (It is not so fast as earlier solutions) but method for backtracking helps to clear concept of it
+
+class Solution {
+public:
+    vector<char> v{'a','e','i','o','u'};
+    void process(int n, char last, int &ans)
+    {
+        if(n==0)
+        {
+            ans++;
+        }
+        else
+        {
+            for(auto i:v)
+            {
+                if(last<=i)
+                    process(n-1,i,ans);
+            }
+        }
+    }
+    int countVowelStrings(int n) {
+
+        int ans=0;
+        process(n,' ',ans);
+        return ans;
+    }
+};

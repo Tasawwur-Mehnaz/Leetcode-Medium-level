@@ -1,0 +1,105 @@
+Given two binary trees original and cloned and given a reference to a node target in the original tree.
+The cloned tree is a copy of the original tree.
+Return a reference to the same node in the cloned tree.
+
+Note that you are not allowed to change any of the two trees or the target node and the answer must be a reference to a node in the cloned tree.
+
+Solution: 
+BFS:
+class Solution {
+    private: TreeNode* ans;
+public:
+    TreeNode* bfs(TreeNode* original, TreeNode* cloned, TreeNode* target)
+    {
+        queue<TreeNode*> q1;
+        queue<TreeNode*> q2;
+        q1.push(original);
+        q2.push(cloned);
+        while(!q1.empty())
+        {
+            auto a=q1.front();
+            auto b=q2.front();
+            q1.pop();
+            q2.pop();
+            if(a==target)
+                return b;
+            if(a->left)
+                q1.push(a->left);
+            if(b->left)
+                q2.push(b->left);
+            if(a->right)
+                q1.push(a->right);
+            if(b->right)
+                q2.push(b->right);
+        }
+        return nullptr;
+        
+    }
+    TreeNode* getTargetCopy(TreeNode* original, TreeNode* cloned, TreeNode* target) {
+     
+        ans=bfs(original,cloned,target);
+        return ans;
+    }
+};
+
+Using only one queue and calling function two times.
+
+class Solution {
+public:
+    TreeNode* bfs(TreeNode* temp,TreeNode* target)
+    {
+        TreeNode* ans;
+        queue<TreeNode*> q;
+        q.push(temp);
+        while(!q.empty())
+        {
+          auto a=q.front();
+          q.pop();
+          if(a->val==target->val)
+          { 
+               ans=a;
+               break;
+          }
+          if(a->left)
+          {
+             q.push(a->left);
+          }
+            if(a->right)
+            {
+              q.push(a->right);
+            }
+        }
+        return ans;
+    }
+    TreeNode* getTargetCopy(TreeNode* original, TreeNode* cloned, TreeNode* target) {
+        TreeNode* a=bfs(original,target);
+        TreeNode* result=bfs(cloned,a);
+        return result;
+    }
+};
+
+DFS Solution:
+
+class Solution {
+    private: TreeNode* ans=NULL;
+public:
+    void dfs(TreeNode* original, TreeNode* cloned, TreeNode* target)
+    {
+        if(original==NULL)
+            return;
+        if(original==target)
+        {  
+            ans=cloned;
+            return;
+        }
+        dfs(original->left,cloned->left,target);
+        dfs(original->right,cloned->right,target);
+        
+    }
+    
+    TreeNode* getTargetCopy(TreeNode* original, TreeNode* cloned, TreeNode* target) {
+     
+        dfs(original,cloned,target);
+        return ans;
+    }
+};

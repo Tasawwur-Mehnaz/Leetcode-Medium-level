@@ -1,0 +1,41 @@
+Given a string array words, return the maximum value of length(word[i]) * length(word[j]) where the two words do not share common letters. 
+If no such two words exist, return 0
+
+Input: words = ["abcw","baz","foo","bar","xtfn","abcdef"]
+Output: 16
+Explanation: The two words can be "abcw", "xtfn".
+
+Solution:
+
+Try to dry run the code.
+
+class Solution {
+public:
+    int maxProduct(vector<string>& words) {
+        int ans=0;
+        int n=words.size();
+        vector<int> int_word(n,0);
+        vector<int> word_len(n,0);
+        for(int i=0;i<n;i++)
+        {
+            string w=words[i];
+            int len=w.length();
+            int temp=0;
+            for(int j=0;j<len;j++)
+            {
+                temp|= 1<<(w[j]-'a');
+            }
+            int_word[i]=temp;
+            word_len[i]=len;
+        }
+        for(int i=0;i<n-1;i++)
+        {
+            for(int j=i+1;j<n;j++)
+            {
+                if((int_word[i]&int_word[j])==0)
+                    ans=max(ans,word_len[i]*word_len[j]);
+            }
+        }
+        return ans;
+    }
+};

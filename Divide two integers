@@ -1,0 +1,45 @@
+Given two integers dividend and divisor, divide two integers without using multiplication, division, and mod operator.
+The integer division should truncate toward zero, which means losing its fractional part. For example, 8.345 would be truncated to 8, and -2.7335 would be truncated to -2.
+Return the quotient after dividing dividend by divisor.
+
+Input: dividend = 10, divisor = 3
+Output: 3
+Explanation: 10/3 = 3.33333.. which is truncated to 3.
+
+Solution:
+Try to dry run first.
+
+class Solution {
+public:
+    int divide(int dividend, int divisor) {
+        if(dividend==INT_MIN and divisor==-1)
+            return INT_MAX;
+        if(dividend==INT_MIN and divisor==1)
+            return INT_MIN;
+        
+        int ans=0;
+        long int D=abs(dividend);
+        long int d=abs(divisor);
+        
+
+        while(D>=d)
+        {
+            long int m=d;
+            long int c=1;
+            
+            while(D-m>=m)
+            {
+                c+=c;  // c<<=1; multipying by 2
+                m+=m;  //m<<=1;
+            }
+            ans+=c;
+            D-=m;
+           
+            
+        }
+        if((dividend>0 and divisor>0) ||(dividend<0 and divisor<0))
+            return ans;
+        return -ans;
+        
+    }
+};

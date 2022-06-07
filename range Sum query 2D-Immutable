@@ -1,0 +1,36 @@
+Given a 2D matrix matrix, handle multiple queries of the following type:
+Calculate the sum of the elements of matrix inside the rectangle defined by its upper left corner (row1, col1) and lower right corner (row2, col2)
+
+Solution:
+
+class NumMatrix {
+public:
+        vector<vector<int>> tmatrix;
+    NumMatrix(vector<vector<int>>& matrix) {
+        tmatrix=matrix;
+        int col=tmatrix[0].size();
+        int row=tmatrix.size();
+        
+        for(int i=0;i<row;i++)
+        {
+            for(int j=1;j<col;j++)
+            {
+                tmatrix[i][j]+=tmatrix[i][j-1];
+            }
+        }
+    }
+    
+    int sumRegion(int row1, int col1, int row2, int col2) {
+        int sum1=0,sum2=0;
+     for(int i=row1;i<=row2;i++)
+     {
+         sum1+=tmatrix[i][col2];
+         if(col1>0)
+         {
+             sum2+=tmatrix[i][col1-1];
+         }
+     }
+     return sum1-sum2;
+       
+    }
+};

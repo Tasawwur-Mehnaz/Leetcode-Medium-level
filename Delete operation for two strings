@@ -1,0 +1,35 @@
+Given two strings word1 and word2, return the minimum number of steps required to make word1 and word2 the same.
+In one step, you can delete exactly one character in either string.
+
+ 
+Example 1:
+
+Input: word1 = "sea", word2 = "eat"
+Output: 2
+Explanation: You need one step to make "sea" to "ea" and another step to make "eat" to "ea".
+
+
+Solution:
+
+class Solution {
+public:
+    int lcs(string &word1, string &word2, int s1, int s2, vector<vector<int>> &dp)
+    {
+        if(s1==0 or s2==0)
+            return 0;
+        if(word1[s1-1]==word2[s2-1])
+            dp[s1][s2]=1+lcs(word1,word2,s1-1,s2-1,dp);
+        if(dp[s1][s2]!=-1)
+            return dp[s1][s2];
+        
+        return dp[s1][s2]=max(lcs(word1,word2,s1-1,s2,dp),lcs(word1,word2,s1,s2-1,dp));
+    }
+    int minDistance(string word1, string word2) {
+        int s1=word1.length();
+        int s2=word2.length();  
+        vector<vector<int>> dp(s1+1, vector<int>(s2+1,-1));
+        int c=lcs(word1,word2,s1,s2,dp);
+        int ans= s1+s2-2*c;
+        return ans;
+    }
+};

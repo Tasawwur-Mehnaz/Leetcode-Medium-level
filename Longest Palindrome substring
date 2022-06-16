@@ -1,0 +1,129 @@
+Given a string s, return the longest palindromic substring in s.
+
+Example 1:
+
+Input: s = "babad"
+Output: "bab"
+Explanation: "aba" is also a valid answer.
+
+Solution:
+
+Two pointer: (43 ms)
+
+class Solution
+{
+    public:
+        string longestPalindrome(string s)
+        {
+            int n = s.size();
+            int start = 0, mlen = 1;
+			
+            for (int i = 0; i < n; i++)
+            {
+                int low = i-1, high = i+1;
+                while (low >= 0 && s[low] == s[i]) 
+                    low--;
+                while (high < n && s[high] == s[i]) 
+                    high++;
+                while (low >= 0 && high < n && s[low] == s[high])
+                {
+                    low--;
+                    high++;
+                }
+                int currlen = high - low - 1;
+                if (mlen < currlen)
+                {
+                    mlen = currlen;
+                    start = low + 1;
+                }
+            }
+            return s.substr(start, mlen);
+        }
+};
+
+Dp: Memoization and recursion  (2690 ms)
+class Solution
+{
+    private:
+        bool helper(int i, int j, string &s, vector<vector < int>> &dp, int &len, int &start)
+        {
+            if (i > j) return true;
+            if (dp[i][j] != -1) return dp[i][j];
+            if (s[i] == s[j])
+            {
+                dp[i][j] = helper(i + 1, j - 1, s, dp, len, start);
+            }
+            else
+            {
+                dp[i][j] = false;
+            }
+            if (dp[i][j] == 1)
+            {
+                if (len < j - i + 1)
+                {
+                    len = j - i + 1;
+                    start = i;
+                }
+            }
+            return dp[i][j];
+        }
+    public:
+        string longestPalindrome(string s)
+        {
+            int n = s.size();
+            int start = 0, len = 1;
+			
+            vector<vector < int>> dp(n, vector<int> (n, -1));
+            for (int i = 0; i < n; i++)
+            {
+                for (int j = i; j < n; j++)
+                {
+                    helper(i, j, s, dp, len, start);
+                }
+            }
+            return s.substr(start, len);
+        }
+};
+
+Dp: Tabulation (1098 ms)
+
+class Solution {
+public:
+    string longestPalindrome(string s) {
+        int n=s.length();
+        int len=1;
+        int first=0,last=0;
+        vector<vector<int>> dp(n,vector<int> (n,-1));
+        for(int g=0;g<n;g++)
+        {
+            for(int i=0,j=g;j<n;i++,j++)
+            {
+                if(i==j)
+                  dp[i][i]=1;
+                else if(g==1)
+                {
+                    if(s[i]==s[j])
+                        dp[i][j]=2;
+                }
+                else
+                {
+                    if(s[i]==s[j] and dp[i+1][j-1]!=-1)
+                        dp[i][j]=1+dp[i+1][j-1];
+                }
+            
+                if(dp[i][j] != -1)
+                {
+                    if(j-i+1 > len)
+                    {
+                        len = j-i+1;
+                        first=i;
+                        last=j;
+                    }
+                }
+            
+            }
+        }
+        
+        return s.substr(first, last-first+1);
+    }
+};

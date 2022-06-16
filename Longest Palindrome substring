@@ -8,7 +8,7 @@ Explanation: "aba" is also a valid answer.
 
 Solution:
 
-Two pointer: (43 ms)
+Two pointer: (43 ms) expanding from ith index
 
 class Solution
 {

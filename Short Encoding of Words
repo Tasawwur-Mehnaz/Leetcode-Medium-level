@@ -1,0 +1,64 @@
+A valid encoding of an array of words is any reference string s and array of indices indices such that:
+words.length == indices.length
+The reference string s ends with the '#' character.
+For each index indices[i], the substring of s starting from indices[i] and up to (but not including) the next '#' character is equal to words[i].
+Given an array of words, return the length of the shortest reference string s possible of any valid encoding of words.
+
+Example 1:
+Input: words = ["time", "me", "bell"]
+Output: 10
+Explanation: A valid encoding would be s = "time#bell#" and indices = [0, 2, 5].
+words[0] = "time", the substring of s starting from indices[0] = 0 to the next '#' is underlined in "time#bell#"
+words[1] = "me", the substring of s starting from indices[1] = 2 to the next '#' is underlined in "time#bell#"
+words[2] = "bell", the substring of s starting from indices[2] = 5 to the next '#' is underlined in "time#bell#"
+
+Solution:
+
+class Solution {
+public:
+    int minimumLengthEncoding(vector<string>& words) {
+       sort(words.begin(),words.end(),[] (auto &a,auto &b)
+       {
+          return a.size()>b.size();  // sorting in descending order of len of each word
+       });
+        unordered_map<string,bool> m;
+        int len=0;
+        for(auto s : words)
+        {
+            if(m.find(s)==m.end())
+            {
+                len+=s.size()+1;
+                for(int i=0;i<s.size();i++)
+                {
+                    m[s.substr(i)]==true;
+                }
+            }
+                
+        }
+        return len;
+    }
+};
+
+Another Solution:
+
+class Solution {
+public:
+    int minimumLengthEncoding(vector<string>& words) {
+        int len=0;
+        set<string> s1(words.begin(),words.end());
+        set<string> s2(words.begin(),words.end());
+        
+        for(auto i: s1)
+        {
+            for(int j=1;j<i.size();j++)
+            s2.erase(i.substr(j));
+        }
+                
+        for(auto i:s2)
+        {
+            len+=i.size()+1;
+        }
+         
+        return len;
+    }
+};

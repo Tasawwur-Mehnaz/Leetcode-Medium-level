@@ -42,7 +42,7 @@ public:
     }
 };
 
-another: Do dry run for better understanding.
+Another: Do dry run for better understanding.
 
 class Solution {
 public:
@@ -61,6 +61,7 @@ public:
             ans.emplace_back(l,min(l+3,r));
             
         }
+        
         while(ans.size()!=searchWord.size()) 
             ans.push_back({});
         return ans;

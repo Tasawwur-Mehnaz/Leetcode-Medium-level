@@ -1,0 +1,58 @@
+There are a total of numCourses courses you have to take, labeled from 0 to numCourses - 1. You are given an array prerequisites where prerequisites[i] = [ai, bi] indicates that you must take course bi first if you want to take course ai.
+For example, the pair [0, 1], indicates that to take course 0 you have to first take course 1.
+Return true if you can finish all courses. Otherwise, return false.
+
+Example 1:
+Input: numCourses = 2, prerequisites = [[1,0]]
+Output: true
+Explanation: There are a total of 2 courses to take. 
+To take course 1 you should have finished course 0. So it is possible.
+
+Soliution:
+approach of (Cycle detection in directed graph)
+
+class Solution {
+public:
+    bool dfs(int vertex, vector<bool> &vis,vector<bool> &curvis, vector<int> adj[])
+    {
+        
+        vis[vertex]=true;
+        curvis[vertex]=true;
+        for(auto child: adj[vertex])
+        {
+          
+            if(!vis[child])
+            {
+              if(dfs(child,vis,curvis,adj))
+                 return true;
+            }
+            else if(curvis[child] && vis[child])
+                 return true;
+        }
+                 
+        curvis[vertex]=false;
+        return false;
+    }
+    
+    bool canFinish(int n, vector<vector<int>>& prerequisites) {
+        vector<int> adj[n];
+        vector<bool> vis(n,false),curvis(n,false);
+        for(auto i:prerequisites)
+        {
+            vector<int> t=i;
+            int a=t[0];
+            int b=t[1];
+            adj[a].push_back(b);
+        }
+        for(int i=0;i<n;i++)
+        {
+            if(!vis[i])
+            {
+                if(dfs(i,vis,curvis,adj))
+                    return false;
+            }
+                
+        }
+        return true;
+    }
+};

@@ -1,0 +1,38 @@
+You are given a rectangular cake of size h x w and two arrays of integers horizontalCuts and verticalCuts where:
+horizontalCuts[i] is the distance from the top of the rectangular cake to the ith horizontal cut and similarly, and
+verticalCuts[j] is the distance from the left of the rectangular cake to the jth vertical cut.
+Return the maximum area of a piece of cake after you cut at each horizontal and vertical position provided in the arrays horizontalCuts and verticalCuts. 
+Since the answer can be a large number, return this modulo 109 + 7.
+
+Example 1:
+Input: h = 5, w = 4, horizontalCuts = [1,2,4], verticalCuts = [1,3]
+Output: 4 
+Explanation: The figure above represents the given rectangular cake. Red lines are the horizontal and vertical cuts.
+After you cut the cake, the green piece of cake has the maximum area.
+
+Solution:
+
+class Solution {
+public:
+    int maxArea(int h, int w, vector<int>& hcuts, vector<int>& vcuts) {
+        
+         sort(hcuts.begin(),hcuts.end());
+         sort(vcuts.begin(),vcuts.end());
+         hcuts.push_back(h);
+         vcuts.push_back(w);
+        long long mh=hcuts[0],mv=vcuts[0];
+        int c=1e9+7;
+        for(int i=0;i<hcuts.size()-1;i++)
+        {   if(mh<(hcuts[i+1]-hcuts[i]))
+            mh=hcuts[i+1]-hcuts[i];
+        }
+        for(int i=0;i<vcuts.size()-1;i++)
+        {  
+            if(mv<(vcuts[i+1]-vcuts[i]))
+            mv=vcuts[i+1]-vcuts[i];
+        }
+        long long ans=mv*mh;
+        return ans%c;
+        
+    }
+  };

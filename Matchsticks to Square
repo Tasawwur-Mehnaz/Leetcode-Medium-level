@@ -1,0 +1,50 @@
+You are given an integer array matchsticks where matchsticks[i] is the length of the ith matchstick. You want to use all the matchsticks to make one square. You should not break any stick, but you can link them up, and each matchstick must be used exactly one time.
+Return true if you can make this square and false otherwise.
+
+Example 1:
+Input: matchsticks = [1,1,2,2,2]
+Output: true
+Explanation: You can form a square with length 2, one side of the square came two sticks with length 1.
+
+Example 2:
+Input: matchsticks = [3,3,3,3,4]
+Output: false
+Explanation: You cannot find a way to form a square with all the matchsticks.
+
+
+Solution:
+
+class Solution {
+public:
+    bool process(int i,vector<int>& nums,vector<int>& sides)
+    {
+        if(i==-1)
+            return sides[0]==0 && sides[1]==0 && sides[2]==0 && sides[3]==0;
+        
+        for(int j=0;j<4;j++)
+        {
+            if(nums[i]>sides[j])
+                continue;
+            sides[j]-=nums[i];
+            if(process(i-1,nums,sides))
+               return true;
+            sides[j]+=nums[i];
+        }
+        return false;
+    }
+    bool makesquare(vector<int>& nums) {
+        int n=nums.size();
+        if(n<4)
+            return false;
+        int perimeter=0;
+        for(auto i:nums)
+            perimeter+=i;
+        if(perimeter%4!=0)
+            return false;
+        sort(nums.begin(),nums.end());   
+        int a=perimeter/4;
+        vector<int> sides(4,a);
+        return process(n-1,nums,sides);
+    }
+    
+};

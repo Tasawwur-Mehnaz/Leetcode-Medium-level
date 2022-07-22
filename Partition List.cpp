@@ -37,11 +37,6 @@ public:
         }
         if(d1->next!=NULL)
         { 
-            t1=d1->next;
-            while(t1!=NULL && t1->next!=NULL)
-            {
-                t1=t1->next;
-            }
             t1->next=d2->next;
             return d1->next;
         }

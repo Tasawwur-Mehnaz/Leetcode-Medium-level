@@ -1,0 +1,108 @@
+Given an integer array nums, return the length of the longest strictly increasing subsequence.
+A subsequence is a sequence that can be derived from an array by deleting some or no elements without changing the order of the remaining elements. For example, [3,6,2,7] is a subsequence of the array [0,3,1,6,2,2,7].
+
+Example 1:
+Input: nums = [10,9,2,5,3,7,101,18]
+Output: 4
+Explanation: The longest increasing subsequence is [2,3,7,101], therefore the length is 4.
+
+Solution:
+
+memoiazation: O(nxn)
+
+class Solution {
+public:
+    int process(int ind, int prev_ind, int n, vector<int>& nums, vector<vector<int>> &dp)
+    {
+        if(ind==n)
+            return 0;
+        if(dp[ind][prev_ind+1]!=-1)
+            return dp[ind][prev_ind+1];
+        
+        int len=0+process(ind+1,prev_ind,n,nums,dp);
+        
+        if(prev_ind==-1 || nums[ind]>nums[prev_ind])
+            len=max(len,1+process(ind+1,ind,n,nums,dp));
+       
+        return dp[ind][prev_ind+1]=len;
+    }
+    int lengthOfLIS(vector<int>& nums) {
+        int n=nums.size();
+        vector<vector<int>> dp(n,vector<int>(n+1,-1));
+        return process(0,-1,n,nums,dp);
+        
+    }
+};
+
+Tabulation: O(n x n)
+
+class Solution {
+public:
+    int lengthOfLIS(vector<int>& nums) {
+        int n=nums.size();
+        vector<vector<int>> dp(n+1,vector<int>(n+1,0));
+        for(int ind=n-1;ind>=0;ind--)
+        {
+            for(int prev_ind=ind-1;prev_ind>=-1;prev_ind--)
+            {
+                int len=0+dp[ind+1][prev_ind+1];
+                if(prev_ind==-1 || nums[ind]>nums[prev_ind])
+                    len=max(len,1+dp[ind+1][ind+1]);
+                dp[ind][prev_ind+1]=len;
+            }
+            
+        }
+        return dp[0][-1+1];
+        
+    }
+};
+
+
+Tabulation: O(n) Optimized
+
+class Solution {
+public:
+    int lengthOfLIS(vector<int>& nums) {
+        int n=nums.size();
+        vector<int> dp(n,1);
+        int maxi=1;
+        for(int ind=0;ind<n;ind++)
+        {
+            for(int prev=0;prev<ind;prev++)
+            {
+                if(nums[ind]>nums[prev])
+                    dp[ind]=max(dp[ind],1+dp[prev]);
+            }
+            maxi=max(maxi,dp[ind]);
+        }
+        return maxi;
+    }
+};
+
+OR
+
+class Solution {
+public:
+    int process(vector<int>& nums,int n)
+    {
+        int res=1;
+        vector<int> dp(n,1);
+        for(int i=1;i<n;i++)
+        {
+            for(int j=0;j<i;j++)
+            {
+                if(nums[i]>nums[j])
+                    dp[i]=max(dp[i],dp[j]+1);
+            }
+            res=max(res,dp[i]);
+        }
+        return res;
+    }
+    
+    int lengthOfLIS(vector<int>& nums) {
+        int ans=0;
+        int n=nums.size();
+        ans=process(nums,n);
+        return ans;
+    }
+};

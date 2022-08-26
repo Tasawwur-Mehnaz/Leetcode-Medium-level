@@ -1,0 +1,49 @@
+You are given an integer n. We reorder the digits in any order (including the original order) such that the leading digit is not zero.
+Return true if and only if we can do this so that the resulting number is a power of two.
+
+
+Example 1:
+Input: n = 1
+Output: true
+
+Input: n = 46     //64
+Output: true
+
+Input: n = 182    //128
+Output: true
+
+Input: n = 10
+Output: false
+
+Solution:
+
+As finding all the permutaion and then comparing would take very much time 
+so acc to constraint of ques 10^9 < 2^31 so we will check the frequency of all pow of 2 numbers and matches with the given number frequency.
+
+class Solution {
+public:
+    vector<int> digitfreq(int n)
+    {
+        vector<int> v(10,0);
+        while(n>0)
+        {
+            v[n%10]++;
+            n/=10;
+        }
+        return v;
+    }
+    
+    bool reorderedPowerOf2(int n) {
+       vector<int> given(10,0);
+       given=digitfreq(n);
+       for(int i=0;i<31;i++)
+       {
+           int t=pow(2,i);
+           vector<int> digitofpow2(10,0);
+           digitofpow2=digitfreq(t);
+           if(given==digitofpow2)
+               return true;
+       }
+        return false;
+    }
+};

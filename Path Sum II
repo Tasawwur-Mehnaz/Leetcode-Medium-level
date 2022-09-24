@@ -1,0 +1,39 @@
+Given the root of a binary tree and an integer targetSum, return all root-to-leaf paths where the sum of the node values in the path equals targetSum. Each path should be returned as a list of the node values, not node references.
+A root-to-leaf path is a path starting from the root and ending at any leaf node. A leaf is a node with no children.
+
+Example 1:
+Input: root = [5,4,8,11,null,13,4,7,2,null,null,5,1], targetSum = 22
+Output: [[5,4,11,2],[5,8,4,5]]
+Explanation: There are two paths whose sum equals targetSum:
+5 + 4 + 11 + 2 = 22
+5 + 8 + 4 + 5 = 22
+
+Solution:
+
+class Solution {
+public:
+    vector<int> t;
+    void process(TreeNode* root, vector<vector<int>> &ans,int targetsum,int sum)
+    {
+        if(root==NULL)
+            return;
+        sum+=root->val;
+        t.push_back(root->val);
+        if(root->left==NULL && root->right==NULL && sum==targetsum)
+            ans.push_back(t);
+        // else if(root->left==NULL && root->right==NULL && targetsum!=sum)
+        // {
+        //     sum=0;                    // this step could be included or not, in both case it will work
+        // }
+        process(root->left,ans,targetsum,sum);
+        process(root->right,ans,targetsum,sum);
+        t.pop_back();
+        return;
+    }
+    vector<vector<int>> pathSum(TreeNode* root, int targetSum) {
+        vector<vector<int>> ans;
+        int sum=0;
+        process(root,ans,targetSum,sum);
+        return ans;
+    }
+};

@@ -20,7 +20,7 @@ Solution: bottom up approach (memoization)
 
 class Solution {
 public:
-    long long solve(int d, int f, int target, vector<vector<long long>>& dp)
+    int solve(int d, int f, int target, vector<vector<int>>& dp)
     {
         if(d==0 && target!=0)
             return 0;
@@ -39,7 +39,7 @@ public:
         return dp[d][target]=ans;
     }
     int numRollsToTarget(int n, int k, int target) {
-        vector<vector<long long>> dp(n+1,vector<long long>(target+1,-1));
+        vector<vector<int>> dp(n+1,vector<int>(target+1,-1));
         return solve(n,k,target,dp);
  
     }

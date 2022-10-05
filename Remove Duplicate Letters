@@ -1,0 +1,49 @@
+Given a string s, remove duplicate letters so that every letter appears once and only once. 
+You must make sure your result is the smallest in lexicographical order among all possible results.
+
+Example 1:
+Input: s = "bcabc"
+Output: "abc"
+
+Example 2:
+Input: s = "cbacdcbc"
+Output: "acdb"
+
+Solution:
+
+class Solution {
+public:
+    string removeDuplicateLetters(string s) {
+        vector<char> h;
+        int n=s.length();
+        vector<int> lastind(26,-1);
+         for(int i=0;i<s.length();i++)
+         {
+           lastind[s[i]-'a']=i;   
+         }
+        string ans="";
+        vector<bool> vis(26,false);
+        stack<char> st;
+        for(int i=0;i<s.length();i++)
+        {
+            if(vis[s[i]-'a'])
+                continue;
+            vis[s[i]-'a']=true;
+            while(!st.empty() && st.top()>s[i] && lastind[st.top()-'a']>i)
+            {
+                vis[st.top()-'a']=false;
+                st.pop();
+            }
+            st.push(s[i]);
+                    
+        }
+        while(!st.empty())
+        {
+            ans.push_back(st.top());
+            st.pop();
+              
+        }
+        reverse(ans.begin(),ans.end());
+        return ans;
+    }
+};

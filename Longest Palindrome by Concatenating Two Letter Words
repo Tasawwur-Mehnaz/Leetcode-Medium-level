@@ -1,0 +1,60 @@
+You are given an array of strings words. Each element of words consists of two lowercase English letters.
+Create the longest possible palindrome by selecting some elements from words and concatenating them in any order. Each element can be selected at most once.
+Return the length of the longest palindrome that you can create. If it is impossible to create any palindrome, return 0.
+A palindrome is a string that reads the same forward and backward.
+
+Example 1:
+Input: words = ["lc","cl","gg"]
+Output: 6
+Explanation: One longest palindrome is "lc" + "gg" + "cl" = "lcggcl", of length 6.
+Note that "clgglc" is another longest palindrome that can be created.
+
+
+Example 2:
+Input: words = ["ab","ty","yt","lc","cl","ab"]
+Output: 8
+Explanation: One longest palindrome is "ty" + "lc" + "cl" + "yt" = "tylcclyt", of length 8.
+Note that "lcyttycl" is another longest palindrome that can be created.
+
+Solution:
+
+class Solution {
+public:
+    int longestPalindrome(vector<string>& words) {
+        unordered_map<string,int> m;
+        int ans=0;
+        for(auto i:words)
+        {
+            m[i]++;
+        }
+        bool flag=false;
+        for(int i=0;i<words.size();i++)
+        {
+            string t=words[i];
+            reverse(t.begin(),t.end());
+            if(words[i]==t && m[t]%2==0)
+            {
+                ans+=m[words[i]]*2;
+                m[words[i]]=0;
+            }  
+            else if(words[i]==t && m[t]%2!=0)
+            {
+                ans+=(m[t]-1)*2;
+                m[t]=0;
+                flag=true;
+            }    
+            else if(words[i]!=t)
+            {
+                int f1=m[words[i]];
+                int f2=m[t];
+                ans+=min(f1,f2)*4;
+                m[words[i]]=0;
+                m[t]=0;
+                  
+            }
+        }
+        if(flag)
+            ans+=2;  // adding one odd letter for one time
+        return ans;
+    }
+};

@@ -1,0 +1,48 @@
+You are given the head of a singly linked-list. The list can be represented as:
+L0 → L1 → … → Ln - 1 → Ln
+Reorder the list to be on the following form:
+L0 → Ln → L1 → Ln - 1 → L2 → Ln - 2 → …
+You may not modify the values in the list's nodes. Only nodes themselves may be changed.
+
+
+Example 1:
+Input: head = [1,2,3,4]
+Output: [1,4,2,3]
+
+
+Solution:
+
+class Solution {
+public:
+    void reorderList(ListNode* head) {
+        ListNode* slow=head;
+        ListNode* fast=head->next;
+        while(fast && fast->next)    //finding middle of linkedlist so that we can separate the list in two
+        {
+            slow=slow->next;
+            fast=fast->next->next;
+        }
+        ListNode* secondlist=slow->next;
+        slow->next=NULL;
+        ListNode* prev=NULL;
+        while(secondlist)         // reversing the secondlist(so that its easy to merge with first list)
+        {
+            ListNode* temp=secondlist->next;
+            secondlist->next=prev;
+            prev=secondlist;
+            secondlist=temp;
+        }
+        ListNode* b=head;
+        ListNode* e=prev;
+        while(e)             //merging the first list and reversed secondlist
+        {
+            ListNode* t1=b->next;
+            ListNode* t2=e->next;
+            b->next=e;
+            e->next=t1;
+            b=t1;
+            e=t2;
+        }
+        return;
+    }
+};

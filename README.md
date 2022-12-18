@@ -1,6 +1,6 @@
-^_^# Solution for Leetcode-easy-level.
+^_^# Solution for Leetcode-Medium-level.
 
-😇So here are some selected Solution of easy level questions of leetcode which should be solved by you atleast once by understanding its concept.
+😇So here are some selected Solution of medium level questions of leetcode which should be solved by you atleast once by understanding its concept.
  
  I also mentioned the topics on which the questions are based, this will help you to solve in a organised way.
 

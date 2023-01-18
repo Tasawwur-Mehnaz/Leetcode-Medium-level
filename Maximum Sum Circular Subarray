@@ -41,3 +41,22 @@ public:
 
     }
 };
+
+
+
+OR 
+
+int maxSubarraySumCircular(vector<int>& nums) {
+        int n=nums.size();
+        int curmin=0,curmax=0,maxsum=nums[0],minsum=nums[0],totalsum=0;
+        for(int i=0;i<n;i++)
+        {
+            totalsum+=nums[i];
+            curmin=min(curmin+nums[i],nums[i]);
+            curmax=max(curmax+nums[i],nums[i]);
+            minsum=min(minsum,curmin);
+            maxsum=max(maxsum,curmax);
+
+        }
+        return maxsum>0?max(maxsum,totalsum-minsum): maxsum;
+    }

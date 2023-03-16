@@ -1,0 +1,35 @@
+Given two integer arrays inorder and postorder where inorder is the inorder traversal of a binary tree and postorder is the postorder traversal of the same tree, construct and return the binary tree.
+
+
+Example 1:
+
+Input: inorder = [9,3,15,20,7], postorder = [9,15,7,20,3]
+Output: [3,9,20,null,null,15,7]
+
+
+Solution:
+
+class Solution {
+public:
+    TreeNode* process(int is,int ie, vector<int>& inorder, int ps, int pe, vector<int>& postorder, unordered_map<int,int> &m)
+    {
+        if(is>ie || ps>pe)
+          return NULL;
+
+        TreeNode* root=new TreeNode(postorder[pe]);
+        int pos=m[postorder[pe]];
+        int num=pos-is; 
+        root->left=process(is,pos-1,inorder,ps,ps+num-1,postorder,m);
+        root->right=process(pos+1,ie,inorder,ps+num,pe-1,postorder,m);
+        return root;
+    }
+    TreeNode* buildTree(vector<int>& inorder, vector<int>& postorder) 
+    {
+        unordered_map<int,int> m;
+        int n=inorder.size();
+        for(int i=0;i<n;i++)
+          m[inorder[i]]=i;
+        
+       return process(0,n-1,inorder,0,n-1,postorder,m);
+    }
+};

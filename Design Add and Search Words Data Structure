@@ -1,0 +1,110 @@
+Design a data structure that supports adding new words and finding if a string matches any previously added string.
+
+Implement the WordDictionary class:
+
+WordDictionary() Initializes the object.
+void addWord(word) Adds word to the data structure, it can be matched later.
+bool search(word) Returns true if there is any string in the data structure that matches word or false otherwise. word may contain dots '.' where dots can be matched with any letter.
+ 
+
+Example:
+
+Input
+["WordDictionary","addWord","addWord","addWord","search","search","search","search"]
+[[],["bad"],["dad"],["mad"],["pad"],["bad"],[".ad"],["b.."]]
+Output
+[null,null,null,null,false,true,true,true]
+
+Explanation
+WordDictionary wordDictionary = new WordDictionary();
+wordDictionary.addWord("bad");
+wordDictionary.addWord("dad");
+wordDictionary.addWord("mad");
+wordDictionary.search("pad"); // return False
+wordDictionary.search("bad"); // return True
+wordDictionary.search(".ad"); // return True
+wordDictionary.search("b.."); // return True
+
+
+Solution:
+
+
+struct trie
+{
+    trie *link[26];
+    bool flag=false;
+    
+
+    bool containkey(char ch)
+    {
+        return link[ch-'a']!=NULL;
+    }
+
+    trie* get(char ch)
+    {
+        return link[ch-'a'];
+    }
+
+    void put(char ch, trie* node)
+    {
+        link[ch-'a']=node;
+    }
+
+    void setend()
+    {
+        flag=true;
+    }
+
+    bool isEnd()
+    {
+       return flag;
+    }  
+};
+
+class WordDictionary {
+public:
+     trie* node;
+    WordDictionary() {
+        node=new trie();
+    }
+    
+    void addWord(string word) {
+       trie* t=node;
+       for(int i=0;i<word.length();i++)
+       {
+           if(!t->containkey(word[i]))
+             t->put(word[i], new trie());
+
+            t=t->get(word[i]);
+       }
+       t->setend();
+    }
+    
+    bool search(string word) {
+      return process(word,node);
+    }
+
+    bool process(string word, trie* node)
+    {
+        for(int i=0;i<word.size();i++)
+        {
+            char ch=word[i];
+            if(ch=='.')
+            {
+               for(auto c:node->link)
+               {
+                   if(c && process(word.substr(i+1),c))
+                      return true;
+               }
+               return false;
+            }
+            
+            if(!node->containkey(ch))
+              return false;
+
+            node=node->get(ch);
+
+        }
+        return node->isEnd();
+    }
+};
